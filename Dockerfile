@@ -8,7 +8,6 @@
 # Blog: https://mlapp.cn
 #=================================================
 
-ARG IMAGE_TAG=18.04
 FROM ubuntu:18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
