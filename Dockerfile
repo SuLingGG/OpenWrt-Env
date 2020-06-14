@@ -31,9 +31,9 @@ RUN apt-get update -qq && apt-get upgrade -qqy && \
     curl -fsSL git.io/tmate.sh | bash && \
     curl -fsSL git.io/gotop.sh | bash -s install && \
     curl -fsSL git.io/bashtop.sh | bash -s install && \
-    su admin && cd ~ && \
-    mkdir -p ~/.ssh && \
-    chmod 700 ~/.ssh && \
+    su admin && cd /home/admin && \
+    mkdir -p /home/admin/.ssh && \
+    chmod 700 /home/admin/.ssh && \
     curl -fsSL git.io/oh-my-zsh.sh | bash && \
     curl -fsSL git.io/oh-my-tmux.sh | bash
 
