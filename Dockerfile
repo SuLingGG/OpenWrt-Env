@@ -35,6 +35,7 @@ RUN apt-get update -qq && apt-get upgrade -qqy && \
     cd /home/admin && \
     mkdir -p /home/admin/.ssh && \
     chmod 700 /home/admin/.ssh && \
+    HOME="/home/admin" && \
     curl -fsSL git.io/oh-my-zsh.sh | bash && \
     curl -fsSL git.io/oh-my-tmux.sh | bash && \
     chown -R admin:admin /home/admin
