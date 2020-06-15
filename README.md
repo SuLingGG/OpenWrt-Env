@@ -1,113 +1,84 @@
-# openwrt-build-env
+# [OpenWrt-Env](https://github.com/SuLingGG/OpenWrt-Env)
 
-[![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat-square&label=LICENSE)](https://github.com/P3TERX/openwrt-build-env/blob/master/LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/P3TERX/openwrt-build-env.svg?style=flat-square&label=Stars&logo=github)](https://github.com/P3TERX/openwrt-build-env/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/P3TERX/openwrt-build-env.svg?style=flat-square&label=Forks&logo=github)](https://github.com/P3TERX/openwrt-build-env/fork)
-[![Docker Stars](https://img.shields.io/docker/stars/p3terx/openwrt-build-env.svg?style=flat-square&label=Docker%20Stars&logo=docker)](https://hub.docker.com/r/p3terx/openwrt-build-env)
-[![Docker Pulls](https://img.shields.io/docker/pulls/p3terx/openwrt-build-env.svg?style=flat-square&label=Docker%20Pulls&logo=docker&color=orange)](https://hub.docker.com/r/p3terx/openwrt-build-env)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/P3TERX/openwrt-build-env/Docker%20images%20publish?label=Actions&logo=github&style=flat-square)
+[![GitHub Stars](https://img.shields.io/github/stars/SuLingGG/OpenWrt-Env.svg?style=flat-square&label=Stars&logo=github)](https://github.com/SuLingGG/OpenWrt-Env/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/SuLingGG/OpenWrt-Env.svg?style=flat-square&label=Forks&logo=github)](https://github.com/SuLingGG/OpenWrt-Env/fork)
+[![Docker Stars](https://img.shields.io/docker/stars/sulinggg/openwrtenv.svg?style=flat-square&label=Docker%20Stars&logo=docker)](https://hub.docker.com/r/sulinggg/openwrtenv)
+[![Docker Pulls](https://img.shields.io/docker/pulls/sulinggg/openwrtenv.svg?style=flat-square&label=Docker%20Pulls&logo=docker&color=orange)](https://hub.docker.com/r/sulinggg/openwrtenv)
 
-OpenWrt build environment in docker.
+本项目基于 P3TERX 大佬的 [openwrt-build-env](https://github.com/P3TERX/openwrt-build-env) 项目，在镜像构建过程中，使用了 Project-OpenWrt [build-scripts](https://github.com/project-openwrt/build-scripts) 项目中的 [init_build_environment.sh](https://github.com/project-openwrt/build-scripts/blob/master/init_build_environment.sh) 脚本来编译 OpenWrt 所需的依赖。
 
-[Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-docker.html)
+此镜像包含以下特性:
 
-## Usage
+1. 已预置完善的 OpenWrt 依赖，无需手动安装；
+2. 预置了配置好的 zsh，方便终端操作；
+3. 预置一些实用的小工具和配置，例如 bashtop，gotop，tmate，oh-my-zsh，oh-my-tmux 等；
+4. 预先配置好了 SSH，方便进行远程连接 (详情请前往 P3TERX 大佬项目的 [README.md](https://github.com/P3TERX/openwrt-build-env#ssh-security-settings) 查看)
 
-### Pull or build image
+以下内容转自 P3TERX 大佬的 openwrt-build-env 项目，并根据本项目实际情况进行了些许修改 (比如用户名等):
 
-- Pull image from docker hub.
-  
-  ```shell
-  docker pull p3terx/openwrt-build-env
-  ```
+## 拉取或构建镜像
 
-- Build image.
-  
-  ```shell
-  docker build -t p3terx/openwrt-build-env github.com/P3TERX/openwrt-build-env
-  ```
+从 DockerHub 拉取镜像:
 
-### Run container
-
-```shell
-docker run \
-    -itd \
-    --name openwrt-build-env \
-    -h P3TERX \
-    -p 10022:22 \
-    -v ~/openwrt:/home/user/openwrt \
-    p3terx/openwrt-build-env
+```
+docker pull sulinggg/openwrtenv
 ```
 
-### Set the mount directory file permissions
+如果你在国内，可以考虑从阿里云 Docker 镜像仓库 (香港) 拉取镜像:
 
-- Enter the `id` command to check UID and GID
-  
-  ```shell
-  $ id
-  uid=1001(p3terx) gid=1002(p3terx)
-  ```
+```
+docker pull registry.cn-hongkong.aliyuncs.com/suling/openwrtenv
+```
 
-- Modify the UID and GID
-  
-  ```shell
-  docker exec openwrt-build-env sudo usermod -u 1001 user
-  docker exec openwrt-build-env sudo groupmod -g 1002 user
-  ```
+构建镜像:
 
-- Modify the file ownership
-  
-  ```shell
-  docker exec openwrt-build-env sudo chown -hR user:user .
-  ```
+```
+docker build -t sulinggg/openwrtenv github.com/SuLingGG/OpenWrt-Env
+```
 
-- Restart container
-  
-  ```shell
-  docker restart openwrt-build-env
-  ```
+## 启动容器
 
-### SSH security settings
+```
+docker run \
+    -itd \
+    --name openwrtenv \
+    -p 10022:22 \
+    -v ~/workspace:/home/admin/workspace \
+    sulinggg/openwrtenv
+```
 
-The default SSH user name and password is `user`. If you are making the container accessible from the internet you'll probably want to secure it bit. You can do one of the following two things after launching the container:
+## 容器权限设置
 
-- Change password:
-  
-  ```shell
-  docker exec -it openwrt-build-env sudo passwd user
-  ```
+在宿主机内使用 `id` 命令来查看当前用户的 uid 与 gid:
 
-- Don't allow passwords at all, use keys instead:
-  
-  ```shell
-  docker cp ~/.ssh/authorized_keys openwrt-build-env:/home/user/.ssh
-  docker exec openwrt-build-env sudo chown user:user /home/user/.ssh/authorized_keys
-  docker exec openwrt-build-env sudo sed -i '/PasswordAuthentication /c\PasswordAuthentication no' /etc/ssh/sshd_config
-  docker restart openwrt-build-env
-  ```
+```
+$ id
+uid=1001(p3terx) gid=1002(p3terx)
+```
 
-### Enter container
+使用 `docker exec` 命令来设定 admin 用户的 uid 和 gid:
 
-- Enter from the host.
-  
-  ```shell
-  docker exec -it openwrt-build-env zsh
-  ```
+```
+docker exec openwrtenv sudo usermod -u 1001 admin
+docker exec openwrtenv sudo groupmod -g 1002 admin
+```
 
-- Connect via SSH.
-  
-  ```shell
-  ssh user@IP -p 10022
-  ```
+设定目录容器内工作目录 (/home/admin) 的所有权:
 
-### Clone source code and build
+```
+docker exec openwrtenv sudo chown -hR admin:admin .
+```
 
-```shell
-git clone https://github.com/openwrt/openwrt
-cd openwrt
-./scripts/feeds update -a
-./scripts/feeds install -a
-make menuconfig
-make download -j8
-make V=s
+重启容器:
+
+```
+docker restart openwrtenv
+```
+
+## 进入容器
+
+在宿主机终端中使用 `docker exec` 命令进入容器:
+
+```
+docker exec -it openwrt-build-env zsh
 ```

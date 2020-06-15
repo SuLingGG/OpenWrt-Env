@@ -14,7 +14,7 @@ on:
     paths:
       - 'Dockerfile'
   schedule:
-    - cron: 10 22 * * 5
+    - cron: 0 0 * * *
 
 jobs:
   publish:
@@ -32,12 +32,12 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_PASSWORD }}
         repository: sulinggg/openwrtenv
-        tags: full
+        tags: latest
         dockerfile: Dockerfile
         path: .
 
     - name: Push Docker Image To Aliyun Docker Registry
       run: |
         docker login -u ${{ secrets.ALIYUN_USERNAME }} -p ${{ secrets.ALIYUN_PASSWORD }} registry.cn-hongkong.aliyuncs.com
-        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/openwrtenv:full registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:full
-        docker push registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:full
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/openwrtenv:latest registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:latest
+        docker push registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:latest
