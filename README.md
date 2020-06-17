@@ -7,6 +7,10 @@
 
 本项目基于 P3TERX 大佬的 [openwrt-build-env](https://github.com/P3TERX/openwrt-build-env) 项目，在镜像构建过程中，使用了 Project-OpenWrt [build-scripts](https://github.com/project-openwrt/build-scripts) 项目中的 [init_build_environment.sh](https://github.com/project-openwrt/build-scripts/blob/master/init_build_environment.sh) 脚本来编译 OpenWrt 所需的依赖。
 
+Github: <https://github.com/SuLingGG/OpenWrt-Env>
+
+DockerHub: <https://hub.docker.com/r/sulinggg/openwrtenv>
+
 此镜像包含以下特性:
 
 1. 已预置完善的 OpenWrt 依赖，无需手动安装；
