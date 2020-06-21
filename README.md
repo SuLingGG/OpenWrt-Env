@@ -5,7 +5,7 @@
 [![Docker Stars](https://img.shields.io/docker/stars/sulinggg/openwrtenv.svg?style=flat-square&label=Docker%20Stars&logo=docker)](https://hub.docker.com/r/sulinggg/openwrtenv)
 [![Docker Pulls](https://img.shields.io/docker/pulls/sulinggg/openwrtenv.svg?style=flat-square&label=Docker%20Pulls&logo=docker&color=orange)](https://hub.docker.com/r/sulinggg/openwrtenv)
 
-本项目基于 P3TERX 大佬的 [openwrt-build-env](https://github.com/P3TERX/openwrt-build-env) 项目，在镜像构建过程中，使用了 Project-OpenWrt [build-scripts](https://github.com/project-openwrt/build-scripts) 项目中的 [init_build_environment.sh](https://github.com/project-openwrt/build-scripts/blob/master/init_build_environment.sh) 脚本来编译 OpenWrt 所需的依赖。
+本项目基于 P3TERX 大佬的 [openwrt-build-env](https://github.com/P3TERX/openwrt-build-env) 项目，在镜像构建过程中，使用了 Project-OpenWrt [build-scripts](https://github.com/project-openwrt/build-scripts) 项目中的 [init_build_environment.sh](https://github.com/project-openwrt/build-scripts/blob/master/init_build_environment.sh) 脚本来安装编译 OpenWrt 所需的依赖。
 
 Github: <https://github.com/SuLingGG/OpenWrt-Env>
 
@@ -84,5 +84,5 @@ docker restart openwrtenv
 在宿主机终端中使用 `docker exec` 命令进入容器:
 
 ```
-docker exec -it openwrt-build-env zsh
+docker exec -it openwrtenv zsh
 ```
