@@ -20,7 +20,7 @@ RUN apt-get update -qq && apt-get upgrade -qqy && \
     sed -i 's/apt full-upgrade/apt-get full-upgrade/g' init_build_environment.sh && \
     sed -i '/Chinese/d' init_build_environment.sh && \
     chmod +x init_build_environment.sh && \
-    ./init_build_environment.sh > /dev/null 2>&1 && \
+    ./init_build_environment.sh && \
     rm init_build_environment.sh && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     mkdir /var/run/sshd && \
