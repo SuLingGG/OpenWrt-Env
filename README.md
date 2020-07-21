@@ -86,3 +86,12 @@ docker restart openwrtenv
 ```
 docker exec -it openwrtenv zsh
 ```
+
+## 不同标签的docker镜像文件简单说明
+
+默认latest标签的docker镜像是基础镜像，只安装了编译OpenWrt所需依赖，只有800M+。
+
+其他超过2G的镜像文件是集成相应版本OpenWrt源码（官方/Lean/Project，详见我的[OpenWrt-Rpi](https://github.com/SuLingGG/OpenWrt-Rpi)项目）+对应设备工具链（Toolchain）的镜像，镜像内已预置了项目源码并且编译好了相应设备的工具链，拉取镜像直接使用，可以省去编译工具链的步骤，缩短 1 个小时左右的编译时间。
+
+这些包含工具链的镜像也是由 GitHub Action 生成：
+https://github.com/SuLingGG/OpenWrt-Toolchain/actions
