@@ -41,7 +41,7 @@ docker pull registry.cn-hongkong.aliyuncs.com/suling/openwrtenv
 
 ### 工具链镜像
 
-工具链镜像在基础镜像上集成了 OpenWrt 源码，并且预编译了树莓派 1~4 四个设备的工具链，适合编译适用于树莓派的 OpenW让他，可以减少 20~60 分钟的编译时间。
+工具链镜像在基础镜像上集成了 OpenWrt 源码，并且预编译了树莓派 1\~4 四个设备的工具链，适合编译适用于树莓派的 OpenWrt，可以减少 20\~60 分钟的编译时间。
 
 以下为工具链镜像的标签名称列表：
 
