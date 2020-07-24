@@ -1,0 +1,72 @@
+#=================================================
+# https://github.com/P3TERX/Actions-OpenWrt
+# Description: Build OpenWrt using GitHub Actions
+# Lisence: MIT
+# Author: P3TERX
+# Blog: https://p3terx.com
+#=================================================
+
+name: Build Raspberry Pi 1 Offical OpenWrt Toolchain
+
+on:
+  repository_dispatch:
+  release:
+    types: published
+  push:
+    branches:
+      - master
+    paths:
+      - 'scripts/offical/*'
+  schedule:
+    - cron: 0 14 * * *
+#  watch:
+#    types: started
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    if: github.event.repository.owner.id == github.event.sender.id
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Initialization Environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        df -hT $PWD
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo -E apt-get -qq autoremove --purge
+        sudo -E apt-get -qq clean
+        sudo timedatectl set-timezone "Asia/Shanghai"
+        echo "::set-env name=PROJECTROOT::$PWD"
+
+    - name: Pull & Run OpenWrt-Env Container
+      run: |
+        docker run -itd --name openwrtenv-offical sulinggg/openwrtenv:latest
+        docker cp $PROJECTROOT/scripts/offical openwrtenv-offical:/home/admin/scripts
+        docker cp $PROJECTROOT/config/offical openwrtenv-offical:/home/admin/config
+        
+    - name: Compile Toolchain For Raspberry Pi 1
+      run: |
+        docker exec openwrtenv-offical bash -c "sudo chown -R admin:admin /home/admin && chmod +x /home/admin/scripts/*.sh"
+        docker exec openwrtenv-offical bash -c "git clone --depth 1 https://github.com/openwrt/openwrt -b master openwrt"
+        docker exec openwrtenv-offical bash -c "cp /home/admin/scripts/* /home/admin/openwrt"
+        docker exec openwrtenv-offical /home/admin/openwrt/build-rpi1-offical-openwrt-toolchain.sh
+        
+    - name: Docker Commit
+      run: |
+        docker commit openwrtenv-offical ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:offical-rpi1
+        df -hT $PWD
+
+    - name: Push Docker Image To Dockerhub
+      run: |
+        docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
+        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:offical-rpi1
+      
+    - name: Push Docker Image To Aliyun Docker Registry
+      run: |
+        docker login -u ${{ secrets.ALIYUN_USERNAME }} -p ${{ secrets.ALIYUN_PWD }} registry.cn-hongkong.aliyuncs.com
+        docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:offical-rpi1 registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:offical-rpi1
+        docker push registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:offical-rpi1
