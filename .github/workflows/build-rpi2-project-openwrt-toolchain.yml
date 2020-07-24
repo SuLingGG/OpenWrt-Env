@@ -57,16 +57,16 @@ jobs:
 
     - name: Docker Commit
       run: |
-        docker commit openwrtenv-project ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:project-rpi2
+        docker commit openwrtenv-project ${{ secrets.DOCKERHUB_USERNAME }}/openwrtenv:project-rpi2
         df -hT $PWD
 
     - name: Push Docker Image To Dockerhub
       run: |
-        docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_PWD }}
-        docker push ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:project-rpi2
+        docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/openwrtenv:project-rpi2
       
     - name: Push Docker Image To Aliyun Docker Registry
       run: |
-        docker login -u ${{ secrets.ALIYUN_USERNAME }} -p ${{ secrets.ALIYUN_PWD }} registry.cn-hongkong.aliyuncs.com
-        docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/openwrtenv:project-rpi2 registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:project-rpi2
+        docker login -u ${{ secrets.ALIYUN_USERNAME }} -p ${{ secrets.ALIYUN_PASSWORD }} registry.cn-hongkong.aliyuncs.com
+        docker tag ${{ secrets.DOCKERHUB_USERNAME }}/openwrtenv:project-rpi2 registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:project-rpi2
         docker push registry.cn-hongkong.aliyuncs.com/${{ secrets.ALIYUN_NAMESPACES }}/openwrtenv:project-rpi2
