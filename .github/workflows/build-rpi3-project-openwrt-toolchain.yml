@@ -51,7 +51,7 @@ jobs:
     - name: Compile Toolchain For Raspberry Pi 3
       run: |
         docker exec openwrtenv-project bash -c "sudo chown -R admin:admin /home/admin && chmod +x /home/admin/scripts/*.sh"
-        docker exec openwrtenv-project bash -c "git clone --depth 1 https://github.com/project-openwrt/openwrt -b 18.06-kernel5.4 openwrt"
+        docker exec openwrtenv-project bash -c "git clone --depth 1 https://github.com/project-openwrt/openwrt -b openwrt-18.06-k5.4 openwrt"
         docker exec openwrtenv-project bash -c "cp /home/admin/scripts/* /home/admin/openwrt"
         docker exec openwrtenv-project /home/admin/openwrt/build-rpi3-project-openwrt-toolchain.sh
 
