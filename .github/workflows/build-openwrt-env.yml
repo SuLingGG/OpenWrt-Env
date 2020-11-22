@@ -9,17 +9,16 @@ name: Docker Images Build & Publish
 
 on:
   repository_dispatch:
-    types: [Manual*, Auto* ,test]
-  push:
-    paths:
-      - 'Dockerfile'
+    types: [lean, rpi1]
+  workflow_dispatch:
   schedule:
     - cron: 0 0 * * *
+#  watch:
+#    types: started
 
 jobs:
-  publish:
-    name: Publish
-    runs-on: ubuntu-latest
+  Build:
+    runs-on: ubuntu-18.04
 
     steps:
     - name: Checkout

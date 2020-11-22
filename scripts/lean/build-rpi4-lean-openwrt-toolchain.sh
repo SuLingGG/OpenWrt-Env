@@ -13,7 +13,7 @@ cp /home/admin/config/rpi4-lean-openwrt.config /home/admin/openwrt/.config
 ./scripts/feeds install -a
 
 # Clone Community Packages
-./clone-community-packages.sh
+curl -fsSL https://raw.githubusercontent.com/SuLingGG/OpenWrt-Rpi/main/scripts/lean-openwrt.sh | bash
 
 # Compile Tools
 make defconfig

@@ -14,11 +14,12 @@ cp /home/admin/config/rpi3-offical-openwrt.config /home/admin/openwrt/.config
 ./scripts/feeds install -a
 
 # Clone Community Packages
-./clone-community-packages.sh
+curl -fsSL https://raw.githubusercontent.com/SuLingGG/OpenWrt-Rpi/main/scripts/offical-openwrt.sh | bash
 
 # Process Community Packages
 ./convert-translation.sh || true
 ./remove-upx.sh || true
+./create-acl.sh -a || true
 
 # Compile Tools
 make defconfig
